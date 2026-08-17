@@ -1,0 +1,67 @@
+[
+  {
+    "id": "push",
+    "name": "Push",
+    "provider": "Firebase Cloud Messaging",
+    "status": "connected",
+    "deliveryRate": 99.4,
+    "medianLatencyMs": 820,
+    "costPerMessage": 0
+  },
+  {
+    "id": "sms",
+    "name": "SMS",
+    "provider": "Gupshup",
+    "status": "connected",
+    "deliveryRate": 97.1,
+    "medianLatencyMs": 3400,
+    "costPerMessage": 0.18
+  },
+  {
+    "id": "voice",
+    "name": "Voice call",
+    "provider": "Exotel",
+    "status": "connected",
+    "deliveryRate": 94.8,
+    "medianLatencyMs": 7200,
+    "costPerMessage": 1.1
+  },
+  {
+    "id": "email",
+    "name": "Email",
+    "provider": "Amazon SES",
+    "status": "connected",
+    "deliveryRate": 99.9,
+    "medianLatencyMs": 2100,
+    "costPerMessage": 0
+  },
+  {
+    "id": "radio",
+    "name": "Radio (DMR gateway)",
+    "provider": "Hytera gateway",
+    "status": "degraded",
+    "deliveryRate": 71.2,
+    "medianLatencyMs": 1500,
+    "costPerMessage": 0,
+    "lastError": "GATEWAY_TIMEOUT: no ack from repeater DMR-5 after 4000ms"
+  },
+  {
+    "id": "webhook",
+    "name": "Webhook",
+    "provider": "Forest Dept reporting API",
+    "status": "connected",
+    "deliveryRate": 96.5,
+    "medianLatencyMs": 640,
+    "costPerMessage": 0
+  },
+  {
+    "id": "slack",
+    "name": "Slack",
+    "provider": "Slack",
+    "status": "disconnected",
+    "deliveryRate": 0,
+    "medianLatencyMs": 0,
+    "costPerMessage": 0,
+    "lastError": "invalid_auth: token revoked"
+  }
+]

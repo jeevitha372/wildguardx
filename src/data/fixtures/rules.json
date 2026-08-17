@@ -1,0 +1,198 @@
+[
+  {
+    "id": "R-1",
+    "name": "Gunshot -> on-call ranger + control room",
+    "enabled": true,
+    "order": 1,
+    "when": [
+      {
+        "field": "class",
+        "op": "is",
+        "value": "gunshot"
+      },
+      {
+        "field": "confidence",
+        "op": ">=",
+        "value": 85
+      }
+    ],
+    "join": "AND",
+    "then": [
+      {
+        "action": "notify",
+        "recipients": "Sector on-call",
+        "channels": [
+          "push",
+          "sms",
+          "voice"
+        ]
+      },
+      {
+        "action": "create_incident",
+        "severity": "critical"
+      },
+      {
+        "action": "raise_sos",
+        "durationSeconds": 15
+      }
+    ],
+    "escalate": [
+      {
+        "afterMinutes": 3,
+        "tier": "Secondary ranger",
+        "channels": [
+          "sms",
+          "voice"
+        ]
+      },
+      {
+        "afterMinutes": 8,
+        "tier": "Range manager",
+        "channels": [
+          "voice",
+          "radio"
+        ]
+      }
+    ],
+    "firedCount30d": 6,
+    "lastFiredMinutesAgo": 12,
+    "deliveryRate": 100
+  },
+  {
+    "id": "R-2",
+    "name": "Elephant at Tier-2 perimeter",
+    "enabled": true,
+    "order": 2,
+    "when": [
+      {
+        "field": "class",
+        "op": "is",
+        "value": "elephant"
+      },
+      {
+        "field": "tier",
+        "op": "is",
+        "value": "T2"
+      }
+    ],
+    "join": "AND",
+    "then": [
+      {
+        "action": "notify",
+        "recipients": "Sector rangers + village warden",
+        "channels": [
+          "push",
+          "sms"
+        ]
+      },
+      {
+        "action": "trigger_deterrent",
+        "device": "perimeter siren"
+      }
+    ],
+    "escalate": [
+      {
+        "afterMinutes": 5,
+        "tier": "Range manager",
+        "channels": [
+          "voice"
+        ]
+      }
+    ],
+    "firedCount30d": 41,
+    "lastFiredMinutesAgo": 47,
+    "deliveryRate": 98.4
+  },
+  {
+    "id": "R-3",
+    "name": "Chainsaw signature (night)",
+    "enabled": true,
+    "order": 3,
+    "when": [
+      {
+        "field": "class",
+        "op": "is",
+        "value": "chainsaw"
+      },
+      {
+        "field": "time",
+        "op": "between",
+        "value": "19:00-05:00"
+      }
+    ],
+    "join": "AND",
+    "then": [
+      {
+        "action": "notify",
+        "recipients": "Control room",
+        "channels": [
+          "push",
+          "sms"
+        ]
+      }
+    ],
+    "escalate": [
+      {
+        "afterMinutes": 4,
+        "tier": "Range manager",
+        "channels": [
+          "voice"
+        ]
+      }
+    ],
+    "firedCount30d": 9,
+    "lastFiredMinutesAgo": 1400,
+    "deliveryRate": 88.9
+  },
+  {
+    "id": "R-4",
+    "name": "Node offline > 6h",
+    "enabled": true,
+    "order": 4,
+    "when": [
+      {
+        "field": "device_status",
+        "op": "is",
+        "value": "offline"
+      }
+    ],
+    "join": "AND",
+    "then": [
+      {
+        "action": "notify",
+        "recipients": "Field technicians",
+        "channels": [
+          "email",
+          "slack"
+        ]
+      }
+    ],
+    "escalate": [],
+    "firedCount30d": 14,
+    "lastFiredMinutesAgo": 320,
+    "deliveryRate": 100
+  },
+  {
+    "id": "R-5",
+    "name": "Tiger sighting digest",
+    "enabled": false,
+    "order": 5,
+    "when": [
+      {
+        "field": "class",
+        "op": "is",
+        "value": "tiger"
+      }
+    ],
+    "join": "AND",
+    "then": [
+      {
+        "action": "log_only"
+      }
+    ],
+    "escalate": [],
+    "firedCount30d": 0,
+    "lastFiredMinutesAgo": null,
+    "deliveryRate": 0
+  }
+]

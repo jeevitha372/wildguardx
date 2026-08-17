@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#0B1120" />
+    <meta
+      name="description"
+      content="WildGuardX — real-time wildlife and perimeter monitoring for forest reserves."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!--
+      Theme bootstrap. Runs BEFORE any paint, so the correct data-theme is on
+      <html> from the very first frame and there is no flash of the wrong theme.
+      Deliberately duplicates the order in src/lib/useTheme.ts:
+        localStorage -> prefers-color-scheme -> VITE_DEFAULT_THEME -> dark
+      Kept inline and dependency-free because anything deferred is too late.
+    -->
+    <script>
+      (function () {
+        // Substituted at build time from VITE_DEFAULT_THEME by the
+        // wildguardx-theme-default plugin in vite.config.ts.
+        var FALLBACK = '__DEFAULT_THEME__'
+        if (FALLBACK !== 'light' && FALLBACK !== 'dark') FALLBACK = 'dark'
+
+        var theme = null
+        try {
+          var stored = localStorage.getItem('wildguardx.theme')
+          if (stored === 'light' || stored === 'dark') theme = stored
+        } catch (e) {
+          /* private mode / sandboxed frame */
+        }
+
+        if (!theme && window.matchMedia) {
+          if (window.matchMedia('(prefers-color-scheme: light)').matches) theme = 'light'
+          else if (window.matchMedia('(prefers-color-scheme: dark)').matches) theme = 'dark'
+        }
+
+        if (!theme) theme = FALLBACK
+
+        document.documentElement.setAttribute('data-theme', theme)
+        document.documentElement.style.colorScheme = theme
+
+        var meta = document.querySelector('meta[name="theme-color"]')
+        if (meta) meta.setAttribute('content', theme === 'light' ? '#F1F3F7' : '#0B1120')
+      })()
+    </script>
+
+    <!--
+      Paint the page background from the same attribute before the stylesheet
+      arrives, so the very first frame is not a white flash on a dark theme.
+    -->
+    <style>
+      html[data-theme='dark'] {
+        background: #0b1120;
+      }
+      html[data-theme='light'] {
+        background: #f7f8fa;
+      }
+    </style>
+
+    <title>WildGuardX — Operations Console</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

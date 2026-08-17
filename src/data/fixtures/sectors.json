@@ -1,0 +1,42 @@
+[
+  {
+    "id": "S1",
+    "name": "North Ridge",
+    "tier": "T1"
+  },
+  {
+    "id": "S2",
+    "name": "Bamboo Valley",
+    "tier": "T1"
+  },
+  {
+    "id": "S3",
+    "name": "Riverine Belt",
+    "tier": "T1"
+  },
+  {
+    "id": "S4",
+    "name": "Eastern Slope",
+    "tier": "T1"
+  },
+  {
+    "id": "S5",
+    "name": "Core Plateau",
+    "tier": "T1"
+  },
+  {
+    "id": "S6",
+    "name": "Thengumarahada Fringe",
+    "tier": "T2"
+  },
+  {
+    "id": "S7",
+    "name": "Masinagudi Perimeter",
+    "tier": "T2"
+  },
+  {
+    "id": "S8",
+    "name": "Sigur Corridor",
+    "tier": "T2"
+  }
+]

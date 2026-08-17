@@ -1,0 +1,477 @@
+/* ===========================================================================
+   WildGuardX — Design Tokens
+   ---------------------------------------------------------------------------
+   Source of truth:
+     design-system/wildguardx/MASTER.md
+     design-system/wildguardx/pages/README.md  (Shared Page Overrides)
+
+   Where the two disagree, pages/README.md wins — the Master file's precedence
+   note says page-level rules override it. Every such override is marked
+   OVERRIDE with the reason, so nothing here is an unexplained divergence.
+
+   ---------------------------------------------------------------------------
+   THEMES
+   ---------------------------------------------------------------------------
+   `[data-theme='dark'], :root` is the dark theme and remains the default.
+   `[data-theme='light']` overrides every token.
+
+   `data-theme` is stamped on <html> by an inline script in index.html before
+   first paint, so there is no flash of the wrong theme. See src/lib/useTheme.ts.
+
+   ---------------------------------------------------------------------------
+   THE TEXT-SAFE / VIVID SPLIT
+   ---------------------------------------------------------------------------
+   A single hue cannot be both readable as 12px text AND saturated enough to
+   carry a 3px rail or a map marker. So every semantic colour has two values:
+
+     --X          TEXT-SAFE. >= 4.5:1 against every surface it can sit on.
+     --X-vivid    SATURATED. For fills >= 24px, rails, markers, chart areas.
+                  >= 3:1 as a graphical object (WCAG 1.4.11).
+     --X-fill     Tinted background. 14% alpha dark / 10% light.
+
+   This is enforced by scripts/check-contrast.mjs, which runs as part of
+   `npm run build`. Do not hand-edit a colour without re-running it.
+   =========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap');
+
+/* ===========================================================================
+   DARK (default)
+   =========================================================================== */
+[data-theme='dark'],
+:root {
+  color-scheme: dark;
+
+  /* --- Color palette (MASTER.md § Color Palette) -------------------------- *
+   * OVERRIDE: several MASTER hues do not reach 4.5:1 as text on --surface-2.
+   * Measured against #151E31: #DC2626 = 3.45:1, #6366F1 = 3.73:1,
+   * #64748B = 3.50:1. The MASTER value is kept as the `-vivid` counterpart
+   * and used for every non-text purpose; the text-safe value is a lightened
+   * sibling of the same hue.                                                */
+  --color-primary: #e5920a; /* text-safe amber   (MASTER #D97706 -> -vivid) */
+  --color-primary-vivid: #d97706; /* MASTER brand, fills + focus ring       */
+  --color-on-primary: #0b1120; /* OVERRIDE: MASTER says #FFF, which is
+                                    3.19:1 on #D97706 and fails as text     */
+
+  --color-secondary: #f59e0b;
+  --color-secondary-vivid: #f59e0b;
+
+  --color-accent: #4f46e5; /* SOLID fill; pairs with --color-on-accent      */
+  --color-accent-text: #a5b4fc; /* link/text-safe indigo                    */
+  --color-accent-vivid: #6366f1; /* MASTER accent, charts + non-text        */
+  --color-on-accent: #ffffff;
+
+  --color-background: #0f172a;
+  --color-foreground: #ffffff;
+  --color-muted: #1f1e27; /* inert chrome only — skeletons, disabled fills  */
+
+  --color-border: rgba(255, 255, 255, 0.08); /* MASTER. Decorative only.    */
+  --color-border-strong: rgba(255, 255, 255, 0.34); /* inputs + controls    */
+
+  --color-destructive: #f87171;
+  --color-destructive-vivid: #dc2626;
+  --color-ring: #d97706;
+
+  /* --- Elevation surfaces (README §1) ------------------------------------ *
+   * OVERRIDE of MASTER `.card { background: #0F172A }`, which is identical
+   * to --color-background and would render cards invisible.                 */
+  --surface-0: #0b1120; /* app shell / true OLED base */
+  --surface-1: #0f172a; /* page background (= --color-background) */
+  --surface-2: #151e31; /* cards, panels, table rows */
+  --surface-3: #1b2540; /* hovered rows, popovers, dropdowns */
+  --surface-4: #222d4d; /* modals, command palette, drawers */
+
+  /* --- Text ramp (README §4) --------------------------------------------- */
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-disabled: #64748b; /* disabled controls ONLY — WCAG 1.4.3 exempt   */
+
+  /* --- Status palette (README §5) ---------------------------------------- *
+   * --status-ok and --status-offline are ADDITIONS: MASTER.md has no success
+   * or neutral colour, which an operations UI cannot function without.      */
+  --status-critical: #f87171;
+  --status-warning: #f59e0b;
+  --status-watch: #e5920a;
+  --status-info: #a5b4fc;
+  --status-ok: #10b981;
+  --status-offline: #94a3b8;
+
+  --status-critical-vivid: #dc2626;
+  --status-warning-vivid: #f59e0b;
+  --status-watch-vivid: #d97706;
+  --status-info-vivid: #6366f1;
+  --status-ok-vivid: #10b981;
+  --status-offline-vivid: #64748b;
+
+  /* Tinted status fills — 14% alpha over the surface, per README §5. */
+  --status-critical-fill: rgba(220, 38, 38, 0.14);
+  --status-warning-fill: rgba(245, 158, 11, 0.14);
+  --status-watch-fill: rgba(217, 119, 6, 0.14);
+  --status-info-fill: rgba(99, 102, 241, 0.14);
+  --status-ok-fill: rgba(16, 185, 129, 0.14);
+  --status-offline-fill: rgba(100, 116, 139, 0.14);
+
+  /* --- Categorical chart palette (analytics.md §1) ----------------------- *
+   * Kept strictly separate from --status-*: using critical-red for a neutral
+   * category trains operators to misread red.                              */
+  --cat-1: #d97706; /* elephant   */
+  --cat-2: #6366f1; /* tiger      */
+  --cat-3: #10b981; /* leopard    */
+  --cat-4: #f59e0b; /* wild boar  */
+  --cat-5: #8b5cf6; /* human      */
+  --cat-6: #64748b; /* other      */
+
+  /* Sequential ramp (heatmaps, density) */
+  --seq-0: #0f172a;
+  --seq-1: #78350f;
+  --seq-2: #d97706;
+  --seq-3: #fcd34d;
+
+  /* Diverging ramp (change vs. previous period) */
+  --div-neg: #6366f1;
+  --div-mid: #1f2937;
+  --div-pos: #d97706;
+
+  /* --- Chart chrome ------------------------------------------------------ */
+  --chart-grid: #1b2540;
+  --chart-axis: #94a3b8;
+  --chart-cursor: rgba(255, 255, 255, 0.04);
+  --chart-heat-peak: rgba(255, 255, 255, 0.6);
+
+  /* --- Composite / chrome tokens ----------------------------------------- *
+   * These replace inline rgba() that previously bled dark values into the
+   * light theme.                                                            */
+  --topbar-bg: color-mix(in srgb, var(--surface-1) 85%, transparent);
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --shimmer-tint: rgba(255, 255, 255, 0.06);
+  --hero-glow: rgba(217, 119, 6, 0.18);
+  --hero-glow-soft: rgba(217, 119, 6, 0.12);
+  --heading-glow: 0 0 10px rgba(217, 119, 6, 0.28);
+  --card-header-tint: color-mix(in srgb, var(--color-primary-vivid) 7%, transparent);
+
+  /* SOS takeover is a fixed critical field in BOTH themes: a life-safety
+     takeover must not invert with the theme. */
+  --sos-bg: rgba(69, 10, 10, 0.97);
+  --sos-fg: #ffffff;
+  --sos-border: rgba(255, 255, 255, 0.8);
+  --sos-panel: rgba(0, 0, 0, 0.25);
+
+  /* --- Map --------------------------------------------------------------- */
+  --map-canvas: var(--surface-0);
+  --map-marker-ring: var(--surface-0);
+
+  /* --- Spacing (MASTER.md § Spacing Variables) --------------------------- */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* --- Shadow depths (MASTER.md § Shadow Depths) ------------------------- */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+
+  /* --- Motion (README §7) ------------------------------------------------ */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 150ms;
+  --dur-base: 200ms;
+  --dur-slow: 300ms;
+
+  /* --- Typography scale (README §9) -------------------------------------- */
+  --font-heading: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-body: 'Fira Sans', ui-sans-serif, system-ui, 'Segoe UI', sans-serif;
+
+  --text-display: clamp(2rem, 7vw, 3rem);
+  --text-h1: 2rem;
+  --text-h2: 1.5rem;
+  --text-h3: 1.125rem;
+  --text-metric: 2.25rem;
+  --text-body: 1rem;
+  --text-sm: 0.875rem;
+  --text-xs: 0.75rem;
+  --text-mono-sm: 0.8125rem;
+
+  /* --- Layout ------------------------------------------------------------ */
+  --sidebar-width: 240px;
+  --sidebar-rail: 64px;
+  --topbar-height: 64px;
+}
+
+/* ===========================================================================
+   LIGHT
+   ---------------------------------------------------------------------------
+   Surfaces INVERT: cards sit ABOVE the page rather than below it, so elevation
+   reads as white-on-grey. Lightness can no longer encode elevation (everything
+   is already near-white), so light mode carries real shadows.
+   =========================================================================== */
+[data-theme='light'] {
+  color-scheme: light;
+
+  /* --- Brand + status ----------------------------------------------------- *
+   * Darkened so text passes 4.5:1. Four values are marginally darker than the
+   * brief prescribed, because the brief's bar was "4.5:1 on #FFFFFF" and the
+   * hover surface --surface-3 (#EDF1F7) is darker than white:
+   *   --color-primary   #B45309 -> #AD4F08   (4.43 -> 4.75 on --surface-3)
+   *   --status-warning  #B45309 -> #AD4F08   (4.43 -> 4.75)
+   *   --status-watch    #A16207 -> #97600A   (4.35 -> 4.64)
+   *   --status-offline  #64748B -> #5A667A   (4.20 -> 5.12)
+   * The prescribed values are retained as the `-vivid` counterparts.        */
+  --color-primary: #ad4f08;
+  --color-primary-vivid: #b45309;
+  --color-on-primary: #ffffff;
+
+  --color-secondary: #ad4f08;
+  --color-secondary-vivid: #b45309;
+
+  --color-accent: #4338ca; /* SOLID fill — white text = 7.90:1              */
+  --color-accent-text: #4338ca;
+  --color-accent-vivid: #4f46e5;
+  --color-on-accent: #ffffff;
+
+  --color-background: #f7f8fa;
+  --color-foreground: #0b1120;
+  --color-muted: #e4e7ec;
+
+  --color-border: rgba(11, 17, 32, 0.12);
+  --color-border-strong: rgba(11, 17, 32, 0.45);
+
+  --color-destructive: #b91c1c;
+  --color-destructive-vivid: #dc2626;
+  --color-ring: #ad4f08;
+
+  /* --- Elevation surfaces ------------------------------------------------- */
+  --surface-0: #f1f3f7; /* sidebar / shell */
+  --surface-1: #f7f8fa; /* page background */
+  --surface-2: #ffffff; /* cards, table rows */
+  --surface-3: #edf1f7; /* hover rows, popovers */
+  --surface-4: #ffffff; /* modals — separated by shadow, not lightness */
+
+  /* --- Text ramp ---------------------------------------------------------- */
+  --text-primary: #0b1120;
+  --text-secondary: #334155;
+  --text-muted: #475569;
+  --text-disabled: #94a3b8; /* WCAG 1.4.3 exempt — inactive components only */
+
+  /* --- Status ------------------------------------------------------------- */
+  --status-critical: #b91c1c;
+  --status-warning: #ad4f08;
+  --status-watch: #97600a;
+  --status-info: #4338ca;
+  --status-ok: #047857;
+  --status-offline: #5a667a;
+
+  --status-critical-vivid: #dc2626;
+  --status-warning-vivid: #b45309;
+  --status-watch-vivid: #a16207;
+  --status-info-vivid: #4f46e5;
+  --status-ok-vivid: #059669;
+  --status-offline-vivid: #64748b;
+
+  /* Status fills drop to 10% alpha in light mode. */
+  --status-critical-fill: rgba(220, 38, 38, 0.1);
+  --status-warning-fill: rgba(180, 83, 9, 0.1);
+  --status-watch-fill: rgba(161, 98, 7, 0.1);
+  --status-info-fill: rgba(79, 70, 229, 0.1);
+  --status-ok-fill: rgba(5, 150, 105, 0.1);
+  --status-offline-fill: rgba(100, 116, 139, 0.1);
+
+  /* --- Categorical palette, darkened to read on white --------------------- */
+  --cat-1: #b45309; /* elephant  */
+  --cat-2: #4338ca; /* tiger     */
+  --cat-3: #047857; /* leopard   */
+  --cat-4: #a16207; /* wild boar */
+  --cat-5: #6d28d9; /* human     */
+  --cat-6: #475569; /* other     */
+
+  /* Sequential ramp — light to dark amber. */
+  --seq-0: #fffbeb;
+  --seq-1: #fde68a;
+  --seq-2: #f59e0b;
+  --seq-3: #b45309;
+
+  --div-neg: #4338ca;
+  --div-mid: #e2e8f0;
+  --div-pos: #b45309;
+
+  /* --- Chart chrome ------------------------------------------------------- */
+  --chart-grid: #e2e8f0;
+  --chart-axis: #475569;
+  --chart-cursor: rgba(11, 17, 32, 0.05);
+  --chart-heat-peak: rgba(11, 17, 32, 0.55);
+
+  /* --- Composite / chrome ------------------------------------------------- */
+  --topbar-bg: color-mix(in srgb, var(--surface-1) 85%, transparent);
+  --overlay-bg: rgba(11, 17, 32, 0.35);
+  --shimmer-tint: rgba(11, 17, 32, 0.05);
+  --hero-glow: rgba(180, 83, 9, 0.1);
+  --hero-glow-soft: rgba(180, 83, 9, 0.07);
+  /* No glow in light mode — a bloom over a pale background reads as blur. */
+  --heading-glow: none;
+  --card-header-tint: color-mix(in srgb, var(--color-primary-vivid) 5%, transparent);
+
+  /* SOS stays a fixed critical field in light mode too. */
+  --sos-bg: rgba(69, 10, 10, 0.97);
+  --sos-fg: #ffffff;
+  --sos-border: rgba(255, 255, 255, 0.8);
+  --sos-panel: rgba(0, 0, 0, 0.25);
+
+  --map-canvas: var(--surface-3);
+  --map-marker-ring: #ffffff;
+
+  /* --- Real shadows: elevation cannot come from lightness here ------------ */
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow-md: 0 4px 8px rgba(16, 24, 40, 0.08);
+  --shadow-lg: 0 12px 24px rgba(16, 24, 40, 0.1);
+  --shadow-xl: 0 24px 48px rgba(16, 24, 40, 0.14);
+}
+
+/* ===========================================================================
+   Component classes carried over verbatim from MASTER.md § Component Specs,
+   with the README overrides applied.
+   =========================================================================== */
+
+/* --- Buttons (MASTER.md § Buttons) --------------------------------------- *
+ * OVERRIDE: MASTER sets `.btn-primary { background: #6366F1; color: white }`.
+ * White on #6366F1 is 4.47:1 — it fails 4.5:1 in dark, and on the light theme
+ * the same indigo is far too pale. Both themes now use --color-accent, which
+ * is the theme's SOLID accent (light #4338CA = 7.90:1, dark #4F46E5 = 6.29:1
+ * against --color-on-accent).                                               */
+.btn-primary {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all var(--dur-base) ease;
+  cursor: pointer;
+}
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all var(--dur-base) ease;
+  cursor: pointer;
+}
+
+/* --- Cards ---------------------------------------------------------------
+ * OVERRIDE of MASTER `.card`:
+ *   background #0F172A -> var(--surface-2)  (invisible on a #0F172A page)
+ *   cursor:pointer     -> removed           (lies about affordance)
+ *   hover lift         -> opt-in via .card--interactive
+ * Rationale: dashboard.md §1, landing.md §1, alerts.md §1.
+ * ------------------------------------------------------------------------ */
+.card {
+  background: var(--surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-md);
+  transition: all var(--dur-base) ease;
+}
+.card--interactive {
+  cursor: pointer;
+}
+.card--interactive:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+/* List/table contexts: background shift only, never a transform (alerts.md §1) */
+.card--row:hover {
+  background: var(--surface-3);
+  transform: none;
+}
+
+/* --- Inputs --------------------------------------------------------------
+ * OVERRIDE of MASTER `.input`: border #E2E8F0 is a light-mode value and is
+ * near-invisible on dark; there was also no background or text colour set.
+ * The border uses --color-border-strong because an input boundary IS the
+ * component identity (WCAG 1.4.11) and must clear 3:1, unlike a card edge.
+ * ------------------------------------------------------------------------ */
+.input {
+  background: var(--surface-2);
+  color: var(--color-foreground);
+  border: 1px solid var(--color-border-strong);
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 16px; /* never below 16px — iOS zooms the viewport on focus */
+  width: 100%;
+  transition:
+    border-color var(--dur-base) ease,
+    box-shadow var(--dur-base) ease;
+}
+.input::placeholder {
+  color: var(--text-muted);
+}
+.input:focus-visible {
+  border-color: var(--color-ring);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-ring) 32%, transparent);
+}
+.input:disabled {
+  background: var(--color-muted);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+
+/* --- Modals --------------------------------------------------------------
+ * OVERRIDE of MASTER `.modal { background: white }` — blinding on an OLED
+ * dark theme and a direct violation of the style's own "low white emission"
+ * guidance. README §2. In light mode --surface-4 IS white, and the modal is
+ * separated from the page by --shadow-xl rather than by lightness.
+ * ------------------------------------------------------------------------ */
+.modal-overlay {
+  background: var(--overlay-bg);
+  backdrop-filter: blur(4px);
+}
+.modal {
+  background: var(--surface-4);
+  color: var(--color-foreground);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-xl);
+  max-width: 500px;
+  width: min(90%, 500px);
+}
+
+/* --- Live numerics (README §6) ------------------------------------------- */
+.metric-value {
+  font-family: var(--font-heading);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Focus (README §8) ---------------------------------------------------- */
+:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+/* On critical surfaces the amber ring loses contrast — switch to white. */
+.on-critical :focus-visible {
+  outline-color: #ffffff;
+}
+
+/* --- Reduced motion (README §7) ------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

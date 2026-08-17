@@ -1,0 +1,14 @@
+{
+  "seed": 20260817,
+  "generatedFor": "WildGuardX demo data layer (PLACEHOLDER — not real telemetry)",
+  "center": {
+    "lat": 11.4102,
+    "lng": 76.695
+  },
+  "nodeCount": 291,
+  "tier1Count": 186,
+  "tier2Count": 105,
+  "detectionCount": 204,
+  "teamCount": 6,
+  "note": "Timestamps are stored as *minutesAgo* and resolved against Date.now() by MockProvider."
+}

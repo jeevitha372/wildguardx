@@ -1,0 +1,243 @@
+@import './tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-padding-top: 80px; /* README §12 — anchors clear the sticky top bar */
+    -webkit-text-size-adjust: 100%;
+    background: var(--surface-1);
+  }
+
+  body {
+    margin: 0;
+    background: var(--surface-1);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden; /* no horizontal scroll on mobile */
+    /* Theme swaps are a deliberate user action, so they get a short fade
+       rather than an instant flip. Suppressed by the reduced-motion block. */
+    transition:
+      background-color var(--dur-base) ease,
+      color var(--dur-base) ease;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    margin: 0;
+  }
+
+  /* Numeric-heavy elements never reflow as digits change (README §6) */
+  th,
+  td,
+  time,
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+
+  ::selection {
+    background: var(--status-watch-fill);
+    color: var(--text-primary);
+  }
+
+  /* Scrollbars follow the theme */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--surface-4) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Native controls pick up the theme instead of rendering light-on-light */
+  input,
+  select,
+  textarea,
+  button {
+    color-scheme: inherit;
+  }
+  input[type='checkbox'],
+  input[type='radio'],
+  input[type='range'] {
+    accent-color: var(--color-primary-vivid);
+  }
+}
+
+@layer components {
+  /* Skip link — first focusable element on every page (README §12) */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 200;
+    padding: 12px 20px;
+    background: var(--surface-4);
+    color: var(--text-primary);
+    border: 1px solid var(--color-border-strong);
+    border-radius: 0 0 8px 0;
+    font-weight: 600;
+  }
+  .skip-link:focus {
+    left: 0;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* Skeleton shimmer — loading state, never a bare spinner (README §13) */
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-muted);
+    border-radius: 6px;
+  }
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, var(--shimmer-tint), transparent);
+    animation: shimmer 1.6s infinite;
+  }
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  /* Stale regions dim to 60% and never present old numbers as current */
+  .is-stale {
+    opacity: 0.6;
+    transition: opacity var(--dur-base) var(--ease-out);
+  }
+
+  /* --- Density: card header wash (Task B) --------------------------------
+   * A very low-alpha brand tint mixed over the card surface, so a card reads
+   * as having a header band without introducing a second surface colour.
+   * ---------------------------------------------------------------------- */
+  .card-header-wash {
+    background-image: linear-gradient(
+      to bottom,
+      var(--card-header-tint),
+      transparent
+    );
+  }
+
+  /* Severity-tinted variant, used on alert and incident cards. */
+  .sev-wash-critical {
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--status-critical-vivid) 9%, transparent),
+      transparent 70%
+    );
+  }
+  .sev-wash-warning {
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--status-warning-vivid) 9%, transparent),
+      transparent 70%
+    );
+  }
+  .sev-wash-watch {
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--status-watch-vivid) 9%, transparent),
+      transparent 70%
+    );
+  }
+  .sev-wash-info {
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--status-info-vivid) 9%, transparent),
+      transparent 70%
+    );
+  }
+}
+
+/* --- Leaflet, themed from tokens ----------------------------------------- */
+.leaflet-container {
+  background: var(--map-canvas) !important;
+  font-family: var(--font-body);
+}
+.leaflet-control-attribution {
+  background: var(--surface-0) !important;
+  color: var(--text-muted) !important;
+  font-size: 10px !important;
+}
+.leaflet-control-attribution a {
+  color: var(--text-secondary) !important;
+}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: var(--surface-4) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-xl);
+}
+.leaflet-popup-content {
+  margin: 12px 14px;
+  font-size: 13px;
+}
+.leaflet-bar a {
+  background: var(--surface-4) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--color-border) !important;
+}
+.leaflet-bar a:hover {
+  background: var(--surface-3) !important;
+}
+
+/* Print: analytics.md §3.9 requires a genuine light-mode render, not an
+   inversion — dark charts waste ink and read badly on paper. Forced for both
+   themes so a dark-theme user still prints a light report. */
+@media print {
+  :root,
+  [data-theme='dark'],
+  [data-theme='light'] {
+    --surface-0: #ffffff;
+    --surface-1: #ffffff;
+    --surface-2: #ffffff;
+    --surface-3: #f4f4f5;
+    --surface-4: #ffffff;
+    --text-primary: #0b1120;
+    --text-secondary: #334155;
+    --text-muted: #475569;
+    --color-border: rgba(0, 0, 0, 0.15);
+    --color-border-strong: rgba(0, 0, 0, 0.45);
+  }
+  body {
+    background: #ffffff;
+    color: #0b1120;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

@@ -1,0 +1,104 @@
+[
+  {
+    "id": "U-01",
+    "name": "Ravi Nair",
+    "initials": "RN",
+    "role": "Ranger",
+    "sectors": [
+      "S7",
+      "S8"
+    ],
+    "status": "available",
+    "phoneMasked": "+91 ••••• ••231",
+    "radioChannel": "DMR-4",
+    "joinedDaysAgo": 412,
+    "onShift": true,
+    "shift": "Night 22-06",
+    "lastPingMinutesAgo": 0.2
+  },
+  {
+    "id": "U-02",
+    "name": "Sathya Krishnasamy",
+    "initials": "SK",
+    "role": "Operator",
+    "sectors": [],
+    "status": "online",
+    "phoneMasked": "+91 ••••• ••884",
+    "radioChannel": "DMR-1",
+    "joinedDaysAgo": 640,
+    "onShift": true,
+    "shift": "Night 22-06",
+    "lastPingMinutesAgo": 0
+  },
+  {
+    "id": "U-03",
+    "name": "Meena Lakshmi",
+    "initials": "ML",
+    "role": "Manager",
+    "sectors": [
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5"
+    ],
+    "status": "online",
+    "phoneMasked": "+91 ••••• ••107",
+    "radioChannel": "DMR-1",
+    "joinedDaysAgo": 700,
+    "onShift": true,
+    "shift": "Day 06-14",
+    "lastPingMinutesAgo": 3
+  },
+  {
+    "id": "U-04",
+    "name": "Arjun Perumal",
+    "initials": "AP",
+    "role": "Ranger",
+    "sectors": [
+      "S1",
+      "S2"
+    ],
+    "status": "responding",
+    "phoneMasked": "+91 ••••• ••550",
+    "radioChannel": "DMR-3",
+    "joinedDaysAgo": 220,
+    "onShift": true,
+    "shift": "Night 22-06",
+    "lastPingMinutesAgo": 1
+  },
+  {
+    "id": "U-05",
+    "name": "Divya Raman",
+    "initials": "DR",
+    "role": "Technician",
+    "sectors": [
+      "S3",
+      "S6"
+    ],
+    "status": "off_duty",
+    "phoneMasked": "+91 ••••• ••319",
+    "radioChannel": "DMR-6",
+    "joinedDaysAgo": 150,
+    "onShift": false,
+    "shift": "Day 06-14",
+    "lastPingMinutesAgo": 260
+  },
+  {
+    "id": "U-06",
+    "name": "Karthik Selvam",
+    "initials": "KS",
+    "role": "Ranger",
+    "sectors": [
+      "S4",
+      "S5"
+    ],
+    "status": "off_grid",
+    "phoneMasked": "+91 ••••• ••472",
+    "radioChannel": "DMR-5",
+    "joinedDaysAgo": 95,
+    "onShift": true,
+    "shift": "Night 22-06",
+    "lastPingMinutesAgo": 34
+  }
+]
