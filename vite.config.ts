@@ -26,12 +26,13 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
 
   return {
-    plugins: [react(), themeDefaultPlugin(env.VITE_DEFAULT_THEME ?? 'dark')],
-    resolve: {
-      alias: {
-        '@': path.resolve(__dirname, './src'),
-      },
+  base: '/wildguardx/',
+  plugins: [react(), themeDefaultPlugin(env.VITE_DEFAULT_THEME ?? 'dark')],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
     },
+  },
     server: {
       port: 5173,
       open: false,
